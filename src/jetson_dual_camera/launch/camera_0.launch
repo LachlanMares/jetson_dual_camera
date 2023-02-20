@@ -1,0 +1,7 @@
+<launch>
+
+  <node name="csi_camera_0" pkg="jetson_dual_camera" type="csi_camera" output="screen" clear_params="true"> 
+  	<rosparam command="load" file="$(find jetson_dual_camera)/config/camera_0_parameters.yaml" />
+  </node>
+
+</launch>

@@ -1,0 +1,6 @@
+<launch>
+
+  <include file="$(find jetson_dual_camera)/launch/camera_0.launch"/>
+  <include file="$(find jetson_dual_camera)/launch/camera_1.launch"/>
+
+</launch>
