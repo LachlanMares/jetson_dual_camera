@@ -70,7 +70,7 @@ class RPi2Camera
             _running = false;
 
             // Start up the camera
-            _video.open(get_gstreamer_str(_device_id, _camera_mode, _flip_method, _image_width, _image_height, _frame_rate));
+            _video.open(get_gstreamer_str(_device_id, _camera_mode, _flip_method, _image_width, _image_height));
 
             if (!_video.isOpened()) {
                 ROS_ERROR("Unable to get video from the camera!");
