@@ -73,10 +73,10 @@ include_directories(
 )
 
 ## Generate messages in the 'msg' folder
-add_message_files(
-   DIRECTORY 
-   FILES 
-)
+#add_message_files(
+#   DIRECTORY 
+#   FILES 
+#)
 
 ## Generate services in the 'srv' folder
 #add_service_files(

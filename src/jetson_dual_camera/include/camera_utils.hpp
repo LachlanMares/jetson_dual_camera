@@ -18,11 +18,11 @@ std::string get_gstreamer_str(int camera_id, int camera_mode, int flip_method, i
 
     switch(camera_mode) {     
         case 0: 
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=0 ! video/x-raw(memory:NVMM), width=3280, height=2464, format=NV12, framerate=21/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=0 ! video/x-raw(memory:NVMM), width=3264, height=2464, format=NV12, framerate=21/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";           
             break;
 
         case 1: 
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=1 ! video/x-raw(memory:NVMM), width=3280, height=1848, format=NV12, framerate=30/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=1 ! video/x-raw(memory:NVMM), width=3264, height=1848, format=NV12, framerate=28/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
             break;
 
         case 2: 
@@ -30,12 +30,16 @@ std::string get_gstreamer_str(int camera_id, int camera_mode, int flip_method, i
             break;
 
         case 3: 
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=3 ! video/x-raw(memory:NVMM), width=1280, height=720, format=NV12, framerate=60/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=3 ! video/x-raw(memory:NVMM), width=1640, height=1232, format=NV12, framerate=30/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
             break;
 
         case 4: 
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=4 ! video/x-raw(memory:NVMM), width=1280, height=720, format=NV12, framerate=90/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=4 ! video/x-raw(memory:NVMM), width=1280, height=720, format=NV12, framerate=60/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
             break;
+
+        case 5: 
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=4 ! video/x-raw(memory:NVMM), width=1280, height=720, format=NV12, framerate=120/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            break;   
         
         default:
             gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=0 ! video/x-raw(memory:NVMM), width=3280, height=2464, format=NV12, framerate=21/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
@@ -54,7 +58,7 @@ double get_timer_period(int fps, int camera_mode) {
             break;
         
         case 1:
-            timer_period = 1.0 / (std::max(std::min(fps, 30), 1));
+            timer_period = 1.0 / (std::max(std::min(fps, 28), 1));
             break;
         
         case 2:
@@ -62,10 +66,14 @@ double get_timer_period(int fps, int camera_mode) {
             break;
         
         case 3:
-            timer_period = 1.0 / (std::max(std::min(fps, 60), 1));
+            timer_period = 1.0 / (std::max(std::min(fps, 30), 1));
             break;
         
         case 4:
+            timer_period = 1.0 / (std::max(std::min(fps, 60), 1));
+            break;
+
+        case 5:
             timer_period = 1.0 / (std::max(std::min(fps, 120), 1));
             break;
 
