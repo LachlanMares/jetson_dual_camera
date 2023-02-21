@@ -39,16 +39,13 @@ class RPi2Camera
         int _frame_rate;
         int _image_width;
         int _image_height;
-
         std::string _image_topic;
-        // std::string _gstreamer_str;
 
         // Publishers
         image_transport::Publisher _image_publisher;
 
         // CV2
         cv::VideoCapture _video;
-        cv::Mat _frame;
 
         // Timers
         ros::Timer _timer;
@@ -72,17 +69,14 @@ class RPi2Camera
             // Variables
             _running = false;
 
-            //std::string g_string = get_gstreamer_str(_device_id, _camera_mode, _flip_method, _image_width, _image_height);
-
-            //std::stringstream ss;
-            //ss << "nvarguscamerasrc sensor-id=" << _device_id << " sensor-mode=" << _camera_mode << " ! video/x-raw(memory:NVMM), width=" << camera_capture_width[_camera_mode] << ", height=" << camera_capture_height[_camera_mode] << ", format=NV12, framerate=" << camera_capture_fps[_camera_mode] << "/1 ! nvvidconv flip-method=" << _flip_method << " ! video/x-raw, width=" << _image_width << ", height=" << _image_height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
- 
-            _video.open(get_gstreamer_str(_device_id, _camera_mode, _flip_method, _image_width, _image_height));
+            // Start up the camera
+            _video.open(get_gstreamer_str(_device_id, _camera_mode, _flip_method, _image_width, _image_height, _frame_rate));
 
             if (!_video.isOpened()) {
                 ROS_ERROR("Unable to get video from the camera!");
             }
 
+            // Publishers
             _image_publisher = _it.advertise(_image_topic, 1);
 
             // Timers
@@ -101,11 +95,11 @@ class RPi2Camera
 
         void timerCallback(const ros::TimerEvent &) { 
             if (_running && ros::ok()) {
-                if (_video.read(_frame)) { 
-                    cv_bridge::CvImage camera_msg; 
-                    camera_msg.header.stamp = ros::Time::now();
+                cv_bridge::CvImage camera_msg;
+
+                if (_video.read(camera_msg.image)) {            
                     camera_msg.encoding = sensor_msgs::image_encodings::BGR8;
-                    camera_msg.image = _frame; 
+                    camera_msg.header.stamp = ros::Time::now(); 
                     _image_publisher.publish(camera_msg.toImageMsg());
                 } 
             }           

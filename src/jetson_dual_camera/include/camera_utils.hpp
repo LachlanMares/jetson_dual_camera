@@ -12,37 +12,44 @@ Description:
 #include <ros/ros.h>
 #include <sstream>
 
-std::string get_gstreamer_str(int camera_id, int camera_mode, int flip_method, int width, int height) {
-
+std::string get_gstreamer_str(int camera_id, int camera_mode, int flip_method, int width, int height, int fps) {
+    int _fps = 1;
     std::stringstream gs_str;
 
     switch(camera_mode) {     
         case 0: 
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=0 ! video/x-raw(memory:NVMM), width=3264, height=2464, format=NV12, framerate=21/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";           
+            _fps = (std::max(std::min(fps, 21), 1));
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=0 ! video/x-raw(memory:NVMM), width=3264, height=2464, format=NV12, framerate=" << _fps << "/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";           
             break;
 
         case 1: 
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=1 ! video/x-raw(memory:NVMM), width=3264, height=1848, format=NV12, framerate=28/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            _fps = (std::max(std::min(fps, 28), 1));
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=1 ! video/x-raw(memory:NVMM), width=3264, height=1848, format=NV12, framerate=" << _fps << "/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
             break;
 
         case 2: 
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=2 ! video/x-raw(memory:NVMM), width=1920, height=1080, format=NV12, framerate=30/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            _fps = (std::max(std::min(fps, 30), 1));
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=2 ! video/x-raw(memory:NVMM), width=1920, height=1080, format=NV12, framerate=" << _fps << "/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
             break;
 
         case 3: 
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=3 ! video/x-raw(memory:NVMM), width=1640, height=1232, format=NV12, framerate=30/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            _fps = (std::max(std::min(fps, 30), 1));
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=3 ! video/x-raw(memory:NVMM), width=1640, height=1232, format=NV12, framerate=" << _fps << "/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
             break;
 
         case 4: 
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=4 ! video/x-raw(memory:NVMM), width=1280, height=720, format=NV12, framerate=60/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            _fps = (std::max(std::min(fps, 60), 1));
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=4 ! video/x-raw(memory:NVMM), width=1280, height=720, format=NV12, framerate=" << _fps << "/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
             break;
 
         case 5: 
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=4 ! video/x-raw(memory:NVMM), width=1280, height=720, format=NV12, framerate=120/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            _fps = (std::max(std::min(fps, 120), 1));
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=4 ! video/x-raw(memory:NVMM), width=1280, height=720, format=NV12, framerate=" << _fps << "/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
             break;   
         
         default:
-            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=0 ! video/x-raw(memory:NVMM), width=3280, height=2464, format=NV12, framerate=21/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            _fps = (std::max(std::min(fps, 21), 1));
+            gs_str << "nvarguscamerasrc sensor-id=" << camera_id << " sensor-mode=0 ! video/x-raw(memory:NVMM), width=3280, height=2464, format=NV12, framerate=" << _fps << "/1 ! nvvidconv flip-method=" << flip_method << " ! video/x-raw, width=" << width << ", height=" << height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
             break;
     }
 
