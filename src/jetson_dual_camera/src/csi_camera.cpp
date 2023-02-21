@@ -10,6 +10,7 @@ Description:
 */
 
 #include "ros/ros.h"
+#include <camera_utils.hpp>
 #include <image_transport/image_transport.h>
 #include <sensor_msgs/image_encodings.h>
 #include <cv_bridge/cv_bridge.h>
@@ -19,7 +20,6 @@ Description:
 #include <sstream>
 #include <new>
 #include <string>
-#include <sstream>
 
 
 class RPi2Camera
@@ -35,13 +35,13 @@ class RPi2Camera
         bool _running;
         int _device_id;
         int _camera_mode;
-        int _flip_mode;
+        int _flip_method;
         int _frame_rate;
         int _image_width;
         int _image_height;
 
         std::string _image_topic;
-        std::string _gstreamer_str;
+        // std::string _gstreamer_str;
 
         // Publishers
         image_transport::Publisher _image_publisher;
@@ -59,11 +59,11 @@ class RPi2Camera
 
             // Private Parameters
             _nh_priv.param<int>("device_id", _device_id, 0);
-            _nh_priv.param<int>("camera_mode", _camera_mode, 3);
-            _nh_priv.param<int>("flip_mode", _flip_mode, 2);
-            _nh_priv.param<int>("frame_rate", _frame_rate, 10);
-            _nh_priv.param<int>("image_width", _image_width, 1280);
-            _nh_priv.param<int>("image_height", _image_height, 720);
+            _nh_priv.param<int>("camera_mode", _camera_mode, 0);
+            _nh_priv.param<int>("flip_method", _flip_method, 0);
+            _nh_priv.param<int>("frame_rate", _frame_rate, 21);
+            _nh_priv.param<int>("image_width", _image_width, 3280);
+            _nh_priv.param<int>("image_height", _image_height, 2464);
 
             std::ostringstream _image_topic_default;
             _image_topic_default << "/camera_" << _device_id;
@@ -72,24 +72,21 @@ class RPi2Camera
             // Variables
             _running = false;
 
-            int camera_capture_width[5] = {3280, 3280, 1920, 1280, 1280};
-            int camera_capture_height[5] = {2464, 1848, 1080, 720, 720};
-            int camera_capture_fps[5] = {21, 30, 30, 60, 90};
+            //std::string g_string = get_gstreamer_str(_device_id, _camera_mode, _flip_method, _image_width, _image_height);
 
-            std::stringstream ss;
-            ss << "nvarguscamerasrc sensor-id=" << _device_id << " sensor-mode=" << _camera_mode << " ! video/x-raw(memory:NVMM), width=" << camera_capture_width[_camera_mode] << ", height=" << camera_capture_height[_camera_mode] << ", format=NV12, framerate=" << camera_capture_fps[_camera_mode] << "/1 ! nvvidconv flip-method=" << _flip_mode << " ! video/x-raw, width=" << _image_width << ", height=" << _image_height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
+            //std::stringstream ss;
+            //ss << "nvarguscamerasrc sensor-id=" << _device_id << " sensor-mode=" << _camera_mode << " ! video/x-raw(memory:NVMM), width=" << camera_capture_width[_camera_mode] << ", height=" << camera_capture_height[_camera_mode] << ", format=NV12, framerate=" << camera_capture_fps[_camera_mode] << "/1 ! nvvidconv flip-method=" << _flip_method << " ! video/x-raw, width=" << _image_width << ", height=" << _image_height << ", format=BGRx ! videoconvert ! video/x-raw, format=BGR ! appsink";
  
-            _video.open(ss.str());
+            _video.open(get_gstreamer_str(_device_id, _camera_mode, _flip_method, _image_width, _image_height));
 
-            if (!_video.isOpened())
-            {
+            if (!_video.isOpened()) {
                 ROS_ERROR("Unable to get video from the camera!");
             }
 
             _image_publisher = _it.advertise(_image_topic, 1);
 
             // Timers
-            _timer = _nh.createTimer(ros::Duration(1.0/((double)_frame_rate)), &RPi2Camera::timerCallback, this);
+            _timer = _nh.createTimer(ros::Duration(get_timer_period(_frame_rate, _camera_mode)), &RPi2Camera::timerCallback, this);
         }
 
         ~RPi2Camera() {}
@@ -106,6 +103,7 @@ class RPi2Camera
             if (_running && ros::ok()) {
                 if (_video.read(_frame)) { 
                     cv_bridge::CvImage camera_msg; 
+                    camera_msg.header.stamp = ros::Time::now();
                     camera_msg.encoding = sensor_msgs::image_encodings::BGR8;
                     camera_msg.image = _frame; 
                     _image_publisher.publish(camera_msg.toImageMsg());
