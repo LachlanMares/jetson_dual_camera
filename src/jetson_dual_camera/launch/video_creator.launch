@@ -1,0 +1,15 @@
+<launch>
+
+  <arg name="bag"/>
+
+<!--  <node name="video_creator" pkg="jetson_dual_camera" type="video_creator.py" output="screen" clear_params="true">-->
+<!--  	<rosparam command="load" file="$(find jetson_dual_camera)/config/video_creator.yaml" />-->
+<!--  </node>-->
+
+  <node pkg="rosbag" type="play" name="rosbag_player" args="--clock --queue 1 $(arg bag) "/>
+
+</launch>
+
+<!-- Example usage
+  roslaunch jetson_dual_camera video_creator.launch bag:=/home/jetson/____/____.bag
+ -->

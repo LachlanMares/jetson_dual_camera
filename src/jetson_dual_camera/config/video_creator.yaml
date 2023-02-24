@@ -1,0 +1,7 @@
+video:
+  title: "camera_0.avi"
+  frame_rate: 30.0
+  width: 2048
+  height: 1536
+
+image_topic: "/stereo_front/left/image_raw"
