@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="jetson_dual_camera" type="remote_start_nano.sh" name="remote_start_nano"/>
+</launch>
