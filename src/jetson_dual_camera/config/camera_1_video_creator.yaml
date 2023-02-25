@@ -1,0 +1,11 @@
+video:
+  title: "camera_1.mp4"
+  frame_rate: 30.0
+  width: 2048
+  height: 1536
+
+image_topic: "/stereo_front/right/image_raw"
+
+start_rosbag: 1
+rosbag_filename: "lidar_rig_2021-10-28-15-26-46.bag"
+rosbag_directory: "/home/lachlan/Sync/M113/datasets/lidar_rig_roseworthy"

@@ -5,3 +5,4 @@ video:
   height: 1536
 
 image_topic: "/stereo_front/left/image_raw"
+start_rosbag: 0
