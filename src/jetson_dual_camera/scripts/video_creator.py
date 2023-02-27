@@ -11,17 +11,17 @@ from cv_bridge import CvBridge
 
 
 def bag_loop():
-    global bag_filename, bag_directory
+    global bag_filename, bag_directory, bag_timeout
     with subprocess.Popen(['rosbag', 'play', str(bag_filename)], cwd=bag_directory) as bag_player:
         stdoutdata, stderrdata = bag_player.communicate()
         if bag_player.returncode == 0:
-            waiting = False
+            bag_timeout = True
 
 
 if __name__ == "__main__":
     """ Don't ask me why video encoding has to happen in the main thread, it just does """
     rospy.init_node("video_creator")
-    global bag_filename, bag_directory
+    global bag_filename, bag_directory, bag_running
 
     if rospy.get_param(param_name="~start_rosbag"):
         bag_directory = Path(rospy.get_param(param_name="~rosbag_directory"))

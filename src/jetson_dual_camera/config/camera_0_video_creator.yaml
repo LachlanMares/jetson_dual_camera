@@ -4,5 +4,5 @@ video:
   width: 2048
   height: 1536
 
-image_topic: "/stereo_front/left/image_raw"
+image_topic: "/camera_0"
 start_rosbag: 0

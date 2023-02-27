@@ -4,8 +4,8 @@ video:
   width: 2048
   height: 1536
 
-image_topic: "/stereo_front/right/image_raw"
+image_topic: "/camera_1"
 
 start_rosbag: 1
-rosbag_filename: "lidar_rig_2021-10-28-15-26-46.bag"
-rosbag_directory: "/home/lachlan/Sync/M113/datasets/lidar_rig_roseworthy"
+rosbag_filename: "2023-02-27-13-11-41.bag"
+rosbag_directory: "/home/satin/rosbags"
