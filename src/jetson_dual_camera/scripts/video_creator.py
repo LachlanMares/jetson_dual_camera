@@ -16,6 +16,7 @@ def bag_loop():
         stdoutdata, stderrdata = bag_player.communicate()
         if bag_player.returncode == 0:
             bag_timeout = True
+            bag_player.kill()
 
 
 if __name__ == "__main__":
@@ -38,23 +39,16 @@ if __name__ == "__main__":
     image_topic = rospy.get_param(param_name="~image_topic")
 
     bag_timeout = False
-    first_frame = True
     bridge = CvBridge()
     video_writer = cv2.VideoWriter(str(video_title), cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'), frame_rate, (width, height))
 
     if rospy.get_param(param_name="~start_rosbag"):
         bag_loop_thread.start()
 
-    # Wait until the rosbag is started
-    data = rospy.wait_for_message(image_topic, Image, timeout=30)
-
     while not rospy.is_shutdown():
         if not bag_timeout:
             try:
-                if not first_frame:
-                    data = rospy.wait_for_message(image_topic, Image, timeout=2)
-                else:
-                    first_frame = False
+                data = rospy.wait_for_message(image_topic, Image, timeout=2)
 
                 # Use cv_bridge to convert ros image message
                 cv_image = bridge.imgmsg_to_cv2(data, "bgr8")
