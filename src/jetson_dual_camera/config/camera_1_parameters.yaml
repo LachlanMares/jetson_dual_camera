@@ -1,7 +1,18 @@
-device_id: 1
-camera_mode: 0
-flip_method: 0
-frame_rate: 20
-image_width: 1280
-image_height: 720
-image_topic: "/camera_1"
+camera:
+  id: 1
+  mode: 0
+  flip_method: 0
+
+image:
+  width: 1280
+  height: 720
+  topic: "/camera_1"
+
+video:
+  title: "camera_1.mp4"
+  frame_rate: 20
+
+rosbag:
+  start: 1
+  filename: "2023-02-27-13-11-41.bag"
+  directory: "/media/lachlanmares/Vx1000 Ext SSD/rosbags"

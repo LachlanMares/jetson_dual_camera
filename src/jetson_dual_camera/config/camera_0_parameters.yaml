@@ -1,7 +1,18 @@
-device_id: 0
-camera_mode: 0
-flip_method: 0
-frame_rate: 20
-image_width: 1280
-image_height: 720
-image_topic: "/camera_0"
+camera:
+  id: 0
+  mode: 0
+  flip_method: 0
+
+image:
+  width: 1280
+  height: 720
+  topic: "/camera_0"
+
+video:
+  title: "camera_0.mp4"
+  frame_rate: 20
+
+rosbag:
+  start: 0
+  filename: " "
+  directory: " "

@@ -55,16 +55,13 @@ class RPi2Camera
         RPi2Camera(): _it(_nh), _nh(), _nh_priv("~") {
 
             // Private Parameters
-            _nh_priv.param<int>("device_id", _device_id, 0);
-            _nh_priv.param<int>("camera_mode", _camera_mode, 0);
-            _nh_priv.param<int>("flip_method", _flip_method, 0);
-            _nh_priv.param<int>("frame_rate", _frame_rate, 21);
-            _nh_priv.param<int>("image_width", _image_width, 3280);
-            _nh_priv.param<int>("image_height", _image_height, 2464);
-
-            std::ostringstream _image_topic_default;
-            _image_topic_default << "/camera_" << _device_id;
-            _nh_priv.param<std::string>("image_topic", _image_topic, _image_topic_default.str());
+            _nh_priv.param<int>("camera/id", _device_id);
+            _nh_priv.param<int>("camera/mode", _camera_mode);
+            _nh_priv.param<int>("camera/flip_method", _flip_method);
+            _nh_priv.param<int>("video/frame_rate", _frame_rate);
+            _nh_priv.param<int>("image/width", _image_width);
+            _nh_priv.param<int>("image/height", _image_height);
+            _nh_priv.param<std::string>("image/topic", _image_topic);
 
             // Variables
             _running = false;

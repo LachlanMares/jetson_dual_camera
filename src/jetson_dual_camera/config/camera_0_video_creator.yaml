@@ -1,9 +1,0 @@
-video:
-  title: "camera_0.mp4"
-  frame_rate: 20.0
-  width: 1280
-  height: 720
-
-image_topic: "/camera_0"
-
-start_rosbag: 0

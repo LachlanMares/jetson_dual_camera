@@ -31,17 +31,17 @@ if __name__ == "__main__":
 
     video_title = jetson_dual_camera_dir / rospy.get_param(param_name="~video/title")
     frame_rate = rospy.get_param(param_name="~video/frame_rate")
-    width = rospy.get_param(param_name="~video/width")
-    height = rospy.get_param(param_name="~video/height")
-    image_topic = rospy.get_param(param_name="~image_topic")
+    width = rospy.get_param(param_name="~image/width")
+    height = rospy.get_param(param_name="~image/height")
+    image_topic = rospy.get_param(param_name="~image/topic")
 
     bag_timeout = False
     bridge = CvBridge()
     video_writer = cv2.VideoWriter(str(video_title), cv2.VideoWriter_fourcc('m', 'p', '4', 'v'), frame_rate, (width, height))
 
-    if rospy.get_param(param_name="~start_rosbag"):
-        bag_directory = Path(rospy.get_param(param_name="~rosbag_directory"))
-        bag_filename = bag_directory / rospy.get_param(param_name="~rosbag_filename")
+    if rospy.get_param(param_name="~rosbag/start"):
+        bag_directory = Path(rospy.get_param(param_name="~rosbag/directory"))
+        bag_filename = bag_directory / rospy.get_param(param_name="~rosbag/filename")
         bag_loop_thread = Thread(target=bag_loop, daemon=True)
         bag_loop_thread.start()
 
