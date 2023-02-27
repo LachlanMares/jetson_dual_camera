@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="rviz" type="rviz" name="main_rviz_window" args=" -d $(find jetson_dual_camera)/launch/demo.rviz"/>
+</launch>

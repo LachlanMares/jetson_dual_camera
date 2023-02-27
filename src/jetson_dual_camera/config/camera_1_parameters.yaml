@@ -1,6 +1,6 @@
 camera:
   id: 1
-  mode: 0
+  mode: 2
   flip_method: 0
 
 image:
@@ -10,9 +10,9 @@ image:
 
 video:
   title: "camera_1.mp4"
-  frame_rate: 20
+  frame_rate: 30
 
 rosbag:
   start: 1
-  filename: "2023-02-27-13-11-41.bag"
-  directory: "/media/lachlanmares/Vx1000 Ext SSD/rosbags"
+  filename: "2023-02-28-08-44-41.bag"
+  directory: "/home/satin/rosbags"

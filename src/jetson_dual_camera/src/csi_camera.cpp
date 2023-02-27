@@ -33,7 +33,7 @@ class RPi2Camera
         
         // Variables
         bool _running;
-        int _device_id;
+        int _camera_id;
         int _camera_mode;
         int _flip_method;
         int _frame_rate;
@@ -55,19 +55,19 @@ class RPi2Camera
         RPi2Camera(): _it(_nh), _nh(), _nh_priv("~") {
 
             // Private Parameters
-            _nh_priv.param<int>("camera/id", _device_id);
-            _nh_priv.param<int>("camera/mode", _camera_mode);
-            _nh_priv.param<int>("camera/flip_method", _flip_method);
-            _nh_priv.param<int>("video/frame_rate", _frame_rate);
-            _nh_priv.param<int>("image/width", _image_width);
-            _nh_priv.param<int>("image/height", _image_height);
-            _nh_priv.param<std::string>("image/topic", _image_topic);
+            _nh_priv.param<int>("camera/id", _camera_id, 0);
+            _nh_priv.param<int>("camera/mode", _camera_mode, 0);
+            _nh_priv.param<int>("camera/flip_method", _flip_method, 0);
+            _nh_priv.param<int>("video/frame_rate", _frame_rate, 30);
+            _nh_priv.param<int>("image/width", _image_width, 1280);
+            _nh_priv.param<int>("image/height", _image_height, 720);
+            _nh_priv.param<std::string>("image/topic", _image_topic, "/camera_0");
 
             // Variables
             _running = false;
 
             // Start up the camera
-            _video.open(get_gstreamer_str(_device_id, _camera_mode, _flip_method, _image_width, _image_height));
+            _video.open(get_gstreamer_str(_camera_id, _camera_mode, _flip_method, _image_width, _image_height));
 
             if (!_video.isOpened()) {
                 ROS_ERROR("Unable to get video from the camera!");
