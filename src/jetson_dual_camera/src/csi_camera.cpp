@@ -20,7 +20,7 @@ Description:
 #include <sstream>
 #include <new>
 #include <string>
-
+#include <signal.h>
 
 class RPi2Camera
 {
@@ -91,15 +91,19 @@ class RPi2Camera
         }
 
         void timerCallback(const ros::TimerEvent &) { 
-            if (_running && ros::ok()) {
-                cv_bridge::CvImage camera_msg;
+            if (ros::ok()) {
+                if (_running) {
+                    cv_bridge::CvImage camera_msg;
 
-                if (_video.read(camera_msg.image)) {            
-                    camera_msg.encoding = sensor_msgs::image_encodings::BGR8;
-                    camera_msg.header.stamp = ros::Time::now(); 
-                    _image_publisher.publish(camera_msg.toImageMsg());
-                } 
-            }           
+                    if (_video.read(camera_msg.image)) {            
+                        camera_msg.encoding = sensor_msgs::image_encodings::BGR8;
+                        camera_msg.header.stamp = ros::Time::now(); 
+                        _image_publisher.publish(camera_msg.toImageMsg());
+                    } 
+                }
+            } else {
+                kill(getpid(), SIGINT);
+            }         
         }
 };
 
