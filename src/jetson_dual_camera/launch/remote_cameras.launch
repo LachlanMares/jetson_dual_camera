@@ -1,3 +1,7 @@
 <launch>
-    <node pkg="jetson_dual_camera" type="remote_start_nano_cameras.sh" name="remote_start_nano_cameras"/>
+    <machine name="jetson" address="192.168.0.1" env-loader="/home/jetson/jetson_dual_camera/src/jetson_dual_camera/remote_start_scripts/env_nano.sh" default="true" user="jetson" />
+    
+    <node machine="jetson" pkg="jetson_dual_camera" type="csi_camera" name="csi_camera_0">
+        <rosparam command="load" file="$(find jetson_dual_camera)/config/camera_0_parameters.yaml" />
+    </node>
 </launch>
