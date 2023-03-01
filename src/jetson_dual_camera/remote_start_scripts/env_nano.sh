@@ -5,4 +5,5 @@ export ROS_IP=192.168.0.1
 source /opt/ros/noetic/setup.bash
 source /home/jetson/jetson_dual_camera/devel/setup.bash
 
-nohup roslaunch jetson_dual_camera cameras.launch
+exec "$@"
+# nohup roslaunch jetson_dual_camera cameras.launch
