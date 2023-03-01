@@ -10,5 +10,7 @@
     </node>
 
     <machine name="satin" address="192.168.0.100" user="satin" />
+
     <node machine="satin" pkg="rviz" type="rviz" name="main_rviz_window" args=" -d $(find jetson_dual_camera)/launch/demo.rviz"/>
+    
 </launch>

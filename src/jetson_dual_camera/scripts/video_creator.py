@@ -58,7 +58,6 @@ if __name__ == "__main__":
                     bag_timeout = True
 
                 video_writer.write(cv_image)
-                cv2.waitKey(1)
 
             except Exception as e:
                 rospy.loginfo(str(type(e)) + " " + str(e))

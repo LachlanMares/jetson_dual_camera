@@ -6,4 +6,3 @@ source /opt/ros/noetic/setup.bash
 source /home/jetson/jetson_dual_camera/devel/setup.bash
 
 exec "$@"
-# nohup roslaunch jetson_dual_camera cameras.launch

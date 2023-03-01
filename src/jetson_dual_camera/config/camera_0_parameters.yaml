@@ -1,6 +1,6 @@
 camera:
   id: 0
-  mode: 2
+  mode: 0
   flip_method: 0
 
 image:
@@ -10,7 +10,7 @@ image:
 
 video:
   title: "camera_0.mp4"
-  frame_rate: 30
+  frame_rate: 20
 
 rosbag:
   start: 0
