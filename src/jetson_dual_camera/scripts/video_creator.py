@@ -5,11 +5,27 @@ import cv2
 import rospy
 import subprocess
 import signal
+import queue
+import time
 from pathlib import Path
 
 from threading import Thread
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
+
+image_queue = queue.Queue(maxsize=1)
+
+
+def image_callback(data):
+    global bag_timeout, height, width
+    # Use cv_bridge to convert ros image message
+    cv_image = bridge.imgmsg_to_cv2(data, "bgr8")
+
+    if cv_image.shape[0] != height or cv_image.shape[1] != width:
+        rospy.logerr(f'Image shape incorrect, killing node \n')
+        bag_timeout = True
+
+    image_queue.put(cv_image, block=False)
 
 
 def bag_loop():
@@ -38,6 +54,10 @@ if __name__ == "__main__":
     bag_timeout = False
     bridge = CvBridge()
     video_writer = cv2.VideoWriter(str(video_title), cv2.VideoWriter_fourcc('m', 'p', '4', 'v'), frame_rate, (width, height))
+    time_now = time.time()
+
+    # SUBSCRIBERS
+    rospy.Subscriber(image_topic, Image, image_callback, queue_size=2)
 
     if rospy.get_param(param_name="~rosbag/start"):
         bag_directory = Path(rospy.get_param(param_name="~rosbag/directory"))
@@ -48,16 +68,10 @@ if __name__ == "__main__":
     while not rospy.is_shutdown():
         while not bag_timeout:
             try:
-                data = rospy.wait_for_message(image_topic, Image, timeout=2)
-
-                # Use cv_bridge to convert ros image message
-                cv_image = bridge.imgmsg_to_cv2(data, "bgr8")
-
-                if cv_image.shape[0] != height or cv_image.shape[1] != width:
-                    rospy.logerr(f'Image shape incorrect, killing node \n')
-                    bag_timeout = True
-
-                video_writer.write(cv_image)
+                queue_data = image_queue.get(timeout=2.0)
+                rospy.loginfo(f'dt {time.time() - time_now}')
+                time_now = time.time()
+                video_writer.write(queue_data)
 
             except Exception as e:
                 rospy.loginfo(str(type(e)) + " " + str(e))
