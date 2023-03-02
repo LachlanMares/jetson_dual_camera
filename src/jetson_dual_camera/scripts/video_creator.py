@@ -13,7 +13,7 @@ from threading import Thread
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
 
-image_queue = queue.Queue(maxsize=1)
+image_queue = queue.Queue(maxsize=3)
 
 
 def image_callback(data):
@@ -54,10 +54,9 @@ if __name__ == "__main__":
     bag_timeout = False
     bridge = CvBridge()
     video_writer = cv2.VideoWriter(str(video_title), cv2.VideoWriter_fourcc('m', 'p', '4', 'v'), frame_rate, (width, height))
-    time_now = time.time()
 
     # SUBSCRIBERS
-    rospy.Subscriber(image_topic, Image, image_callback, queue_size=2)
+    rospy.Subscriber(image_topic, Image, image_callback, queue_size=1)
 
     if rospy.get_param(param_name="~rosbag/start"):
         bag_directory = Path(rospy.get_param(param_name="~rosbag/directory"))
@@ -69,8 +68,6 @@ if __name__ == "__main__":
         while not bag_timeout:
             try:
                 queue_data = image_queue.get(timeout=2.0)
-                rospy.loginfo(f'dt {time.time() - time_now}')
-                time_now = time.time()
                 video_writer.write(queue_data)
 
             except Exception as e:
