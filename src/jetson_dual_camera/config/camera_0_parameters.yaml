@@ -1,16 +1,16 @@
 camera:
   id: 0
-  mode: 0
+  mode: 3
   flip_method: 0
 
 image:
-  width: 1280
-  height: 720
+  width: 960
+  height: 540
   topic: "/camera_0"
 
 video:
   title: "camera_0.mp4"
-  frame_rate: 20
+  frame_rate: 30
 
 rosbag:
   start: 0
