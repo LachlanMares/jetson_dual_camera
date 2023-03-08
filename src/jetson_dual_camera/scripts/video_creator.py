@@ -43,7 +43,7 @@ if __name__ == "__main__":
     rospy.init_node("video_creator")
     global bag_filename, bag_directory, bag_running
 
-    jetson_dual_camera_dir = Path(os.getenv("HOME")) / 'jetson_dual_camera' / 'src' / 'jetson_dual_camera' / 'videos'
+    jetson_dual_camera_dir = Path(os.getenv("HOME")) / 'jetson_dual_camera' / 'videos'
 
     video_title = jetson_dual_camera_dir / rospy.get_param(param_name="~video/title")
     frame_rate = rospy.get_param(param_name="~video/frame_rate")
