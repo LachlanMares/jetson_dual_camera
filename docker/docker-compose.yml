@@ -8,3 +8,4 @@ services:
     working_dir: /jetson_dual_camera
     stdin_open: true
     tty: true
+    network_mode: "host"
