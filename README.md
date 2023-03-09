@@ -93,10 +93,12 @@ To exit the container, type enter `exit` in both bash shells.
 
 At this point you can choose to enter the container again by using `make exec` and start following the instructions from [Running the Code](#running-the-code).
 
-You can kill (delete) the container by running `make down`. Once you do this you will need to follow the instructions from [Entering the Container](#entering-the-container). Restarting the host computer will also have this effect.
+You can kill (delete) the container by running `make down`. Once you do this you will need to follow the instructions from [Entering the Container](#entering-the-container). Restarting the host computer will also have this effect.  
 
+<br></br>
 
 # Running Locally
+**These instructions are currently deprecated due to the docker container requiring a different path for the `videos/` directory in [`scripts/video_creator.py`](https://github.com/LachlanMares/jetson_dual_camera/blob/docker_integration/src/jetson_dual_camera/scripts/video_creator.py#L46).**
 
 ## ROS Stuff
 Install ROS Noetic if you haven't already, requires Ubuntu 20.04
