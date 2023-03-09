@@ -352,3 +352,5 @@ MigrationBackup/
 /devel
 .vscode
 .idea
+/videos/*
+.DS_Store

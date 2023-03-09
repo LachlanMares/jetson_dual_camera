@@ -1,11 +1,10 @@
 <launch>
-  <machine name="satin" address="192.168.0.100" user="satin" />
 
-  <node machine="satin" name="video_creator_0" pkg="jetson_dual_camera" type="video_creator.py" output="screen" clear_params="true">
+  <node name="video_creator_0" pkg="jetson_dual_camera" type="video_creator.py" output="screen" clear_params="true">
     <rosparam command="load" file="$(find jetson_dual_camera)/config/camera_0_parameters.yaml" />
   </node>
 
-  <node machine="satin" name="video_creator_1" pkg="jetson_dual_camera" type="video_creator.py" output="screen" clear_params="true">
+  <node name="video_creator_1" pkg="jetson_dual_camera" type="video_creator.py" output="screen" clear_params="true">
     <rosparam command="load" file="$(find jetson_dual_camera)/config/camera_1_parameters.yaml" />
   </node>
 
