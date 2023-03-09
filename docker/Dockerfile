@@ -8,16 +8,15 @@ RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc
 
 # For 
 RUN printf "function jetson_dual_camera_remote() {\n\
-  source /opt/ros/noetic/setup.bash\n\
-  source ~/jetson_dual_camera/devel/setup.bash\n\
+  source /jetson_dual_camera/devel/setup.bash\n\
   export ROS_IP=\"192.168.0.100\"\n\
 }" >> ~/.bashrc
 
 # Install rosdep
 RUN apt-get -y install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool build-essential
 
-# Install Pip and Nano
-RUN apt-get -y install python3-pip nano
+# Install Pip, Nano, and ping
+RUN apt-get -y install python3-pip nano iputils-ping
 
 # Install necessary ROS packages
 RUN apt-get update
